@@ -4,7 +4,7 @@
   "private": true,
   "description": "Dirt Boi bot",
   "scripts": {
-    "tsc": "npx tsc",
+    "tsc": "tsc",
     "build": "npm run tsc"
   },
   "keywords": [],
@@ -13,11 +13,11 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^12.7.2"
+    "@types/node": "^12.7.2",
+    "typescript": "^3.6.3"
   },
   "dependencies": {
     "discord.js": "^11.5.1",
-    "redux": "^4.0.4",
-    "typescript": "^3.6.3"
+    "redux": "^4.0.4"
   }
 }

@@ -5,12 +5,9 @@
   "private": true,
   "scripts": {
     "postinstall": "cd discord-service && npm install && cd .. && cd web-frontend && npm install",
-    "build": "cd discord-service/ && npm run build && cd .. && cd web-frontend && npm run build"
+    "build": "npx tsc -v && cd discord-service/ && npm run build && cd .. && cd web-frontend && npm run build"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "typescript": "^3.6.3"
-  }
+  "license": "ISC"
 }
