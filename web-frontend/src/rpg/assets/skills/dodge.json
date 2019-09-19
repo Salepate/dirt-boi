@@ -1,0 +1,11 @@
+{
+    "name": "Dodge",
+    "description": "Dodge a physical attack",
+    "effects": [
+        {
+            "chance": 0.33,
+            "effectName": "dodge",
+            "trigger": "hurt"
+        }
+    ]
+}

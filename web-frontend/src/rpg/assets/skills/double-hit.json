@@ -1,0 +1,12 @@
+{
+    "name": "Double Hit",
+    "description": "Does 2x damage",
+    "effects": [
+        {
+            "chance": 0.25,
+            "effectName": "damage",
+            "trigger": "hit",
+            "value": 1.0
+        }
+    ]
+}
