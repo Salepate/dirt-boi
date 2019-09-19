@@ -1,0 +1,17 @@
+{
+  "name": "discord-service",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "tsc": "tsc",
+    "build": "npm run tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {
+    "typescript": "^3.6.3"
+  }
+}

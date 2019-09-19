@@ -1,0 +1,1 @@
+worker: node discord-service/build/index.js
