@@ -1,17 +1,23 @@
 {
   "name": "discord-service",
   "version": "1.0.0",
-  "description": "",
   "private": true,
+  "description": "Dirt Boi bot",
   "scripts": {
     "tsc": "tsc",
     "build": "npm run tsc"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {},
+  "author": {
+    "name": "Salepate"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^12.7.2",
+    "typescript": "^3.5.3"
+  },
   "dependencies": {
-    "typescript": "^3.6.3"
+    "discord.js": "^11.5.1",
+    "redux": "^4.0.4"
   }
 }

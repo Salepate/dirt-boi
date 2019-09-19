@@ -1,9 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es2015",
     "module": "commonjs",
-     "outDir": "./build",
+    "outDir": "./build/",
     "strict": true,
-    "esModuleInterop": true
+    "noImplicitAny": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
   }
 }
