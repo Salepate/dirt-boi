@@ -6,18 +6,30 @@ import { actionUserInteracted } from '../store/user-store';
 import './bot-commands'
 import { Commands } from './bot-commands';
 import { MessageSource } from './message-source';
-import { isNullOrUndefined } from 'util';
+import { isNullOrUndefined, isUndefined } from 'util';
+import BotService from './bot-service';
+import apiService from '../services/service-api';
+
+import botConfig from '../assets/bot.config.json'
+import { resolve } from 'path';
 
 export default class BotClient {
+    path: string
+    assetPath: string
     token: string = ''
     private client: Discord.Client
+    private serviceMap: Map<string, BotService>
     store: Store<BotStore>
-
+    config: object
     
-    constructor(token: string) {
+    constructor(path: string, token: string) {
+        this.path = path
+        this.assetPath = resolve(path, 'assets/')
         this.token = token
         this.client = new Discord.Client()
+        this.serviceMap = new Map<string, BotService>()
         this.store = createStore(storeRoot)
+        this.config = botConfig
         this.client
         .on('ready', this.onConnectionReady)
         .on('message', this.onMessage)
@@ -25,8 +37,26 @@ export default class BotClient {
     }
     
     registerCommand(cmd: Commands.Command) {
-        console.log(`registered command ${cmd.identifier}`)
-        Commands.registerCommand(cmd)
+        if ( !Commands.registerCommand(this, cmd) ) {
+            console.log(`unable to initialize command ${cmd.identifier}`)            
+        }
+        else {
+            console.log(`registered command ${cmd.identifier}`)
+        }
+    }
+
+    registerService(service: BotService) {
+        this.serviceMap.set(service.name, service)
+        console.log(`: starting service ${service.name}`)
+        service.run(this)
+    }
+
+    getService<T>(name: string): T | undefined {
+        const service: BotService | undefined = this.serviceMap.get(name)
+        if ( !isUndefined(service)) {
+            return service.service as T
+        }
+        return undefined
     }
     
     private onConnectionReady() {
@@ -60,10 +90,10 @@ export default class BotClient {
     run() {
         
         let version = process.env.npm_package_version
-
         console.log(`: DirtBoi ${version}`)
         console.log(`: connecting`)
-        this.client.login(this.token)
+        //this.client.login(this.token)
+        this.registerService(apiService)
     }
 }
 

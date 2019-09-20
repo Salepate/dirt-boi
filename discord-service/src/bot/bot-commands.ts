@@ -1,6 +1,7 @@
 import * as botConfig from '../assets/bot.config.json'
 import { MessageSource } from './message-source.js';
-import { isNumber, isNullOrUndefined } from 'util';
+import { isNumber, isNullOrUndefined, isUndefined } from 'util';
+import BotClient from './bot-client.js';
 
 
 export namespace Commands
@@ -10,7 +11,7 @@ export namespace Commands
         invoke: any,
         level?: number
         dontSplit?: boolean
-        serviceSetup?: any,
+        serviceSetup?: (bot: BotClient) => boolean,
     }
 
     interface CommandList {
@@ -51,14 +52,20 @@ export namespace Commands
         }
     }
 
-    export function registerCommand(command: Command): boolean {
+    export function registerCommand(bot: BotClient, command: Command): boolean {
+        let success: boolean = false
         if ( !commands[command.identifier] ) {
-            commands[command.identifier] = command
+            if ( !isUndefined(command.serviceSetup)) {
+                success = command.serviceSetup(bot)            
+            }
+            else {
+                success = true
+            }
 
-            if ( !isNullOrUndefined(command.serviceSetup))
-                command.serviceSetup()            
-            return true
+            if ( success ) {
+                commands[command.identifier] = command
+            }
         }
-        return false
+        return success
     }
 }
