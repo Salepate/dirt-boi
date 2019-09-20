@@ -15,7 +15,6 @@ export interface ApiService {
 const startApi = (bot: BotClient) => {
     server.use(cors())
     server.listen(process.env.PORT || 3000)
-    console.log(__dirname)
 }
 
 const addRoute = (id: string, route: string, callback: (req: Request<ParamsDictionary>, resp:Response) => any) => {
