@@ -14,7 +14,7 @@ export interface ApiService {
 
 const startApi = (bot: BotClient) => {
     server.use(cors())
-    server.listen(2551)
+    server.listen(process.env.PORT || 3000)
     console.log(__dirname)
 }
 
