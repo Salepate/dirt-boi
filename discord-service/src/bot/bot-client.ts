@@ -88,11 +88,10 @@ export default class BotClient {
     }
     
     run() {
-        
         let version = process.env.npm_package_version
         console.log(`: DirtBoi ${version}`)
         console.log(`: connecting`)
-        //this.client.login(this.token)
+        this.client.login(this.token)
         this.registerService(apiService)
     }
 }
