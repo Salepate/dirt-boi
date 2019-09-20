@@ -1,7 +1,7 @@
 import BotClient from "./bot-client";
 
 type BotService = {
-    run: (bot: BotClient) => void
+    run: (bot: BotClient) => boolean | Promise<boolean>
     service: any
     name: string
 }

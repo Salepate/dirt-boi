@@ -9,7 +9,7 @@ export namespace MessageSource {
         user: Discord.User
     }
 
-    export function reply(src: Source, message: string) {
+    export function sendMessage(src: Source, message: string) {
         return src.channel.send(message)
     }
 }

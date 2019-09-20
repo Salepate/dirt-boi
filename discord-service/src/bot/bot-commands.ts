@@ -8,7 +8,7 @@ export namespace Commands
 {
     export interface Command {
         identifier: string
-        invoke: any,
+        invoke: (src: MessageSource.Source, ...args: any) => any,
         level?: number
         dontSplit?: boolean
         serviceSetup?: (bot: BotClient) => boolean,
@@ -19,6 +19,8 @@ export namespace Commands
     }
 
     let commands:CommandList = {}
+
+    export function getCommands() { return commands }
 
     export function isBotCommand(msg: string): boolean {
         return msg.length > 1 && msg[0] === botConfig.basePrefix

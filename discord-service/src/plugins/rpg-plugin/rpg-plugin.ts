@@ -1,18 +1,18 @@
-import { Commands } from "../bot/bot-commands";
-import BotClient from "../bot/bot-client";
-import apiService, { ApiService } from "../services/service-api";
-import { isUndefined } from "util";
-import path from 'path'
+import { BotPlugin } from "../../bot/bot-plugin";
+import BotClient from "../../bot/bot-client";
+import apiService, { ApiService } from "../../services/service-api";
 import { readFileSync } from "fs";
-import { Response, Request } from "express-serve-static-core";
+import path from 'path'
+import { isUndefined } from "util";
+import { Request, Response } from "express";
+import storyCommand from "./story-command";
 
-const storyCommand: Commands.Command = {
-    identifier: 'story',
-    invoke: () => {
-        console.log(`story invoked`)
-    },
 
-    serviceSetup: (bot: BotClient) => {
+const rpgPlugin: BotPlugin = {
+    name: 'rpg',
+    commands: [],
+
+    initializationCallback: (bot: BotClient) => {
         const api: ApiService | undefined = bot.getService<ApiService>(apiService.name)
         const database = JSON.parse(readFileSync(path.resolve(bot.assetPath, 'rpg/database/database.json')).toString())
 
@@ -60,4 +60,4 @@ const storyCommand: Commands.Command = {
     }
 }
 
-export default storyCommand
+export default rpgPlugin
