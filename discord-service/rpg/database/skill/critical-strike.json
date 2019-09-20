@@ -1,0 +1,12 @@
+{
+    "name": "Critical Strike",
+    "description": "Critical hit does 1.5x damage",
+    "effects": [
+        {
+            "chance": 0.5,
+            "effectName": "damage",
+            "trigger": "hit",
+            "value": 0.5
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+{
+    "class": {
+        "adventurer": "adventurer.json",
+        "warrior": "warrior.json",
+        "ninja": "ninja.json",
+        "creature": "creature.json"
+    },
+    "skill": {
+        "critical-strike": "critical-strike.json",
+        "double-hit": "double-hit.json",
+        "dodge": "dodge.json",
+        "attack": "attack.json"
+    },
+    "mob": {
+        "blob": "blob.json"
+    },
+    "hero": {
+        "default": "baseHero.json"
+    }
+}

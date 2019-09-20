@@ -1,0 +1,12 @@
+{
+    "name": "Attack",
+    "description": "Does 1x dmg",
+    "effects": [
+        {
+            "chance": 1,
+            "effectName": "damage",
+            "trigger": "hit",
+            "value": 0
+        }
+    ]
+}

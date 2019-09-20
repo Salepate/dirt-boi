@@ -1,0 +1,8 @@
+{
+    "name": "Blob",
+    "hp": 10,
+    "maxHp": 10,
+    "dmg": 1,
+    "class": "creature",
+    "level": 1
+}
