@@ -2,7 +2,7 @@ import * as Discord from 'discord.js';
 import { resolve } from 'path';
 import { createStore, Store } from 'redux';
 import { isUndefined } from 'util';
-import botConfig from '../assets/bot.config.json';
+import botConfig, { version } from '../assets/bot.config.json';
 import BotNative from '../plugins/native-plugin/native-plugin';
 import { BotStore, storeRoot } from '../store/bot-store';
 import { actionUserInteracted } from '../store/user-store';
@@ -11,7 +11,6 @@ import { Commands } from './bot-commands';
 import { BotCommand, BotPlugin } from './bot-plugin';
 import BotService from './bot-service';
 import { MessageSource } from './message-source';
-import {version} from '../assets/bot.config.json'
 
 export default class BotClient {
     path: string
@@ -63,7 +62,6 @@ export default class BotClient {
         console.log(`: trying to register plugin ${plugin.name}`)
 
         let services: BotService[] = plugin.services || []
-        let commands: BotCommand[] = plugin.commands || []
 
         let error: boolean = false
         let asyncServices = 0
@@ -76,6 +74,7 @@ export default class BotClient {
                     error = true
                 } else {
                     console.log(`: service ${services[i].name} successfully initialized`)
+                    this.serviceMap.set(services[i].name, services[i])
                 }
             } else {
                 ++asyncServices
@@ -84,6 +83,7 @@ export default class BotClient {
                     if ( success ) {
                         console.log(`: service ${services[i].name} successfully initialized`)
                         asyncServices--
+                        this.serviceMap.set(services[i].name, services[i])
                         checkQueue()
                     } 
                 }))
@@ -176,7 +176,6 @@ export default class BotClient {
         console.log(`: DirtBoi ${botVersion}`)
         console.log(`: connecting`)
         this.client.login(this.token)
-        // this.registerService(apiService)
         this.registerPlugin(BotNative)
     }
 
