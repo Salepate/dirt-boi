@@ -1,2 +1,1 @@
-worker: node discord-service/build/index.js
-web: node web-frontend/server/index.js web-frontend/dist
+web: node discord-service/build/index.js
