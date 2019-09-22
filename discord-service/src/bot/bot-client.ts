@@ -27,11 +27,11 @@ export default class BotClient {
     private serviceMap: Map<string, BotService>
     private initializationQueue: BotPlugin[]
     
-    constructor(path: string, token: string) {
+    constructor(path: string) {
         this.path = path
         this.assetPath = resolve(path, 'assets/')
         this.cachePath = resolve(path, 'cache/')
-        this.token = token
+        this.token = botConfig.client.token
         this.client = new Discord.Client()
         this.store = createStore(storeRoot)
         this.config = botConfig
