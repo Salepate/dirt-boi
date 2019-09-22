@@ -1,9 +1,10 @@
-import { Commands } from "../../bot/bot-commands";
+import BotClient from "../../bot/bot-client";
+import { BotCommand } from "../../bot/bot-plugin";
 import { MessageSource } from "../../bot/message-source";
 
-const storyCommand: Commands.Command = {
+const storyCommand: BotCommand = {
     identifier: 'story',
-    invoke: (src: MessageSource.Source) => {
+    invoke: (bot: BotClient, src: MessageSource.Source) => {
         MessageSource.sendMessage(src, "[not implemented yet]")
     },
 }

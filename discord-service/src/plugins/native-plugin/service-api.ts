@@ -1,7 +1,9 @@
 import express from 'express'
 import cors from 'cors'
-import BotService from '../bot/bot-service'
-import BotClient from '../bot/bot-client'
+import cookieParser from 'cookie-parser'
+
+import BotService from '../../bot/bot-service'
+import BotClient from '../../bot/bot-client'
 import { ParamsDictionary, Request, Response } from 'express-serve-static-core'
 
 
@@ -14,6 +16,7 @@ export interface ApiService {
 
 const startApi = (bot: BotClient) => {
     server.use(cors())
+    server.use(cookieParser())
     return new Promise<boolean>((r => {
         const port = process.env.PORT || 3000
         server.listen(port, () => {

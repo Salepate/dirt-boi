@@ -1,4 +1,9 @@
 {
     "version": "1.0.0",
-    "basePrefix": "!"
+    "basePrefix": "!",
+    "client": {
+        "id": "INSERT_APP_ID",
+        "secret": "INSERT_APP_SECRET",
+        "redirect": "INSERT_REDIRECT_URI"
+    }
 }
