@@ -25,3 +25,14 @@ by default a restful api service is provided so plugins and commands can fetch a
 ### Plugins
 
 a plugin pack commands and services together and offers extra initialization callbacks
+
+## Setup
+
+(web-frontend) is not used at this time
+
+1. clone repo
+1. in root folder `npm i`
+1. edit `discord-service/src/index.ts` and set your token
+1. edit `discord-service/assets/bot.config.json` and set your app data (todo merge 3/4)
+1. `cd discord-service`
+1. `npm run dev` to run the bot and automatically rebuild on changes
