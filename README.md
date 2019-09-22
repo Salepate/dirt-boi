@@ -10,7 +10,7 @@ It can be extended with commands, services and plugins
 
 ### Commands
 
-A command let a discord user makes use of it
+A command can be invoked by a discord user
 
 ```
 !kick <user> : Elegantly discards a user from a server
@@ -18,25 +18,25 @@ A command let a discord user makes use of it
 
 ### Services
 
-service are background routines that accompany commands and deliver more functionalities
+services are background routines that accompany commands and deliver more functionalities
 
 by default a restful api service is provided so plugins and commands can fetch and create new routes
 
 ### Plugins
 
-a plugin pack commands and services together and offers extra initialization callbacks
+a plugin packs commands and services together and offers extra initialization callbacks
 
 ## Setup
 
-(web-frontend) is not used at this time
+*web-frontend is not used at this time*
 
-1. Create an application/bot
+* Create an application/bot
     1. create application at https://discordapp.com/developers/applications/
     1. create bot in the created application
     1. set redirect uri(s)
     1. get token from bot
     1. get client id/secret from application
-1. Setup Dirt Boi
+* Setup Dirt Boi
     1. clone repo
     1. in root folder `npm i`
     1. edit `discord-service/src/index.ts` and set your token
