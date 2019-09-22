@@ -1,11 +1,11 @@
 import { BotPlugin } from "../../bot/bot-plugin";
 import BotClient from "../../bot/bot-client";
-import apiService, { ApiService } from "../../services/service-api";
 import { readFileSync } from "fs";
 import path from 'path'
 import { isUndefined } from "util";
 import { Request, Response } from "express";
 import storyCommand from "./story-command";
+import apiService, { ApiService } from "../native-plugin/service-api";
 
 
 const rpgPlugin: BotPlugin = {
