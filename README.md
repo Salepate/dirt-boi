@@ -39,7 +39,6 @@ a plugin packs commands and services together and offers extra initialization ca
 * Setup Dirt Boi
     1. clone repo
     1. in root folder `npm i`
-    1. edit `discord-service/src/index.ts` and set your token
-    1. edit `discord-service/src/assets/bot.config.json` and set your app data (todo merge 3/4)
+    1. edit `discord-service/src/assets/bot.config.json` and set your client data: token, id, secret, uris
     1. `cd discord-service`
     1. `npm run dev` to run the bot and automatically rebuild on changes
