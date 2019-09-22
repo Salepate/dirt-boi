@@ -1,11 +1,11 @@
 import BotClient from "../../bot/bot-client";
 import { BotCommand } from "../../bot/bot-plugin";
-import { MessageSource } from "../../bot/message-source";
+import { MessageSource, sendMessage } from "../../bot/message-source";
 
 const storyCommand: BotCommand = {
     identifier: 'story',
     invoke: (bot: BotClient, src: MessageSource.Source) => {
-        MessageSource.sendMessage(src, "[not implemented yet]")
+        sendMessage(src.channel, "[not implemented yet]")
     },
 }
 

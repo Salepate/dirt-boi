@@ -1,15 +1,34 @@
+import { TextChannel, User, Message} from 'discord.js';
 import { BotUser } from "../store/user-store";
-import * as Discord from 'discord.js'
-import { checkServerIdentity } from "tls";
 
 export namespace MessageSource {
     export type Source = {
         profile: BotUser
-        channel: Discord.TextChannel
-        user: Discord.User
+        channel: TextChannel
+        user: User
     }
+}
 
-    export function sendMessage(src: Source, message: string) {
-        return src.channel.send(message)
+
+
+export type MessageOptions = {
+    expires?: number
+}
+
+export const sendMessage = (channel: TextChannel, content: string, options?: MessageOptions) => {
+    options = options || {}
+    
+    if ( options.expires ) {
+        const span = options.expires
+
+        if ( span < 0 ) {
+            console.error(`: invalid span ${span}`)
+        } else {
+            channel.send(content).then(p => {
+                (p as Message).delete(span)
+            })
+        }
+    } else {
+        channel.send(content)    
     }
 }
