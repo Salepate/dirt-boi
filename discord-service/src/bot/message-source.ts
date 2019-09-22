@@ -9,8 +9,6 @@ export namespace MessageSource {
     }
 }
 
-
-
 export type MessageOptions = {
     expires?: number
 }
