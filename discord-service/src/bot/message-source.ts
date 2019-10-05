@@ -1,9 +1,9 @@
 import { TextChannel, User, Message} from 'discord.js';
-import { BotUser } from "../store/user-store";
+import { DirtBoiUserProfile } from "../store/user-store";
 
 export namespace MessageSource {
     export type Source = {
-        profile: BotUser
+        profile: DirtBoiUserProfile
         channel: TextChannel
         user: User
     }

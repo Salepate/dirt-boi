@@ -2,14 +2,15 @@ import * as Discord from "discord.js"
 
 export const ActionNewUser = "new_user"
 
-export type BotUser = {
-    nick: string,
+export type DirtBoiUserProfile = {
+    nick: string
     rank: number
+    botOwner?: boolean
 }
 
 
 export type UserStore = {
-    [state: string]: BotUser,
+    [state: string]: DirtBoiUserProfile,
 }
 
 
