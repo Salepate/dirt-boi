@@ -1,7 +1,7 @@
 import { BotPlugin } from "../../bot/bot-plugin";
-import versionCommand from "./version-command";
-import commandsCommand from "./commands-command";
-import apiService from "./service-api";
+import versionCommand from "./commands/version-command";
+import commandsCommand from "./commands/commands-command";
+import apiService from "./services/service-api";
 
 const BotNative: BotPlugin = {
     name: "native",

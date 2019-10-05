@@ -2,8 +2,8 @@ import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 
-import BotService from '../../bot/bot-service'
-import BotClient from '../../bot/bot-client'
+import BotService from '../../../bot/bot-service'
+import BotClient from '../../../bot/bot-client'
 import { ParamsDictionary, Request, Response } from 'express-serve-static-core'
 
 
