@@ -10,7 +10,7 @@ export namespace MessageSource {
 }
 
 export type MessageOptions = {
-    expires?: number
+    expires?: number        // in seconds
 }
 
 export const sendMessage = (channel: TextChannel, content: string, options?: MessageOptions) => {
@@ -23,7 +23,7 @@ export const sendMessage = (channel: TextChannel, content: string, options?: Mes
             console.error(`: invalid span ${span}`)
         } else {
             channel.send(content).then(p => {
-                (p as Message).delete(span)
+                (p as Message).delete(span*1000)
             })
         }
     } else {

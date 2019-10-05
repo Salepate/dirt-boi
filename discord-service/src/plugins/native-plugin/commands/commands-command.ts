@@ -1,7 +1,7 @@
-import { Commands } from "../../bot/bot-commands";
-import { BotCommand } from "../../bot/bot-plugin";
-import { MessageSource, sendMessage } from "../../bot/message-source";
-import BotClient from "../../bot/bot-client";
+import { Commands } from "../../../bot/bot-commands";
+import { BotCommand } from "../../../bot/bot-plugin";
+import { MessageSource, sendMessage } from "../../../bot/message-source";
+import BotClient from "../../../bot/bot-client";
 
 let cached: boolean = false
 let cacheString: string
@@ -21,7 +21,7 @@ const commandsCommand: BotCommand = {
             cached = true
         }
 
-        sendMessage(src.channel, `${block}Command list:\n${cacheString}${block}`, {expires: 1000*10})
+        sendMessage(src.channel, `${block}Command list:\n${cacheString}${block}`, {expires: 10})
     }
 }
  
