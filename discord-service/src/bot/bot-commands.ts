@@ -1,6 +1,6 @@
-import * as botConfig from '../assets/bot.config.json'
 import { MessageSource } from './message-source.js';
 import { isNumber, isNullOrUndefined, isUndefined } from 'util';
+import * as botConfig from '../assets/bot.config.json';
 import BotClient from './bot-client.js';
 import { BotCommand } from './bot-plugin.js';
 
@@ -20,7 +20,7 @@ export namespace Commands
     export function getCommands() { return commands }
 
     export function isBotCommand(msg: string): boolean {
-        return msg.length > 1 && msg[0] === botConfig.basePrefix
+        return msg.length > botConfig.basePrefix.length && msg.startsWith(botConfig.basePrefix)
     }
 
     export function isValidBotCommand(msg: string): boolean {

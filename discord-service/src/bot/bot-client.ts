@@ -3,7 +3,7 @@ import { mkdirSync } from 'fs';
 import { resolve } from 'path';
 import { createStore, Store } from 'redux';
 import { isUndefined } from 'util';
-import botConfig, { version } from '../assets/bot.config.json';
+import * as botConfig from '../assets/bot.config.json';
 import BotNative from '../plugins/native-plugin/native-plugin';
 import { BotStore, storeRoot } from '../store/bot-store';
 import { actionUserInteracted } from '../store/user-store';
@@ -19,7 +19,6 @@ export default class BotClient {
     readonly assetPath: string
     readonly cachePath: string
     readonly store: Store<BotStore>
-    readonly config: object
     
     private token: string = ''
     private client: Discord.Client
@@ -34,7 +33,6 @@ export default class BotClient {
         this.token = botConfig.client.token
         this.client = new Discord.Client()
         this.store = createStore(storeRoot)
-        this.config = botConfig
         
         this.plugins = new Map<string, BotPlugin>()
         this.serviceMap = new Map<string, BotService>()
