@@ -1,8 +1,0 @@
-{
-    "name": "John",
-    "hp": 10,
-    "maxHp": 10,
-    "dmg": 1,
-    "class": "adventurer",
-    "level": 1
-}
