@@ -6,13 +6,14 @@ import { isUndefined } from 'util';
 import * as botConfig from '../assets/bot.config.json';
 import BotNative from '../plugins/native-plugin/native-plugin';
 import { BotStore, storeRoot } from '../store/bot-store';
-import { actionUserInteracted } from '../store/user-store';
+import { actionUserInteracted, DirtBoiUserProfile } from '../store/user-store';
 import './bot-commands';
-import { Commands } from './bot-commands';
+import { CommandPermission, Commands, ScopePermission } from './bot-commands';
 import { dispatchMessage } from './bot-events.js';
 import { BotCommand, BotPlugin } from './bot-plugin';
 import BotService from './bot-service';
-import { MessageSource } from './message-source';
+import { MessageSource, sendMessage } from './message-source';
+import { resolvePermission, UserPermission } from './user-permission.js';
 
 export default class BotClient {
     readonly path: string
@@ -199,7 +200,13 @@ export default class BotClient {
         let channel = msg.channel as Discord.TextChannel
         this.store.dispatch(actionUserInteracted(author))
 
-        const profile = this.store.getState().users[author.id]
+        const owners: string[] = botConfig.client.owners || []
+
+        const profile: DirtBoiUserProfile = {
+            nick: author.username,
+            rank: 0,
+            botOwner: owners.includes(author.id)
+        }
         const source: MessageSource.Source  = {
             channel: channel,
             user: author,
@@ -208,15 +215,21 @@ export default class BotClient {
 
         if ( Commands.isBotCommand(msg.content) ) {
             if ( Commands.isValidBotCommand(msg.content)) {
+                const userPermissions = resolvePermission(author, profile, channel)
+                const cmdInstance = Commands.createInstance(this, msg.content, source)
 
-                Commands.invokeCommand(this, msg.content, source)
-            }
-            else  {
-                console.log(`: unknown command ${msg.content}`)
+                if ( this.testPermission(userPermissions, cmdInstance.permissions)) {
+                    cmdInstance.invoke()
+                } else {
+                    sendMessage(channel, `permission denied (${cmdInstance.permissions.scope})`, {expires: 5})
+                }
             }
         }
 
         dispatchMessage('guild', channel.guild.id, source, msg.content)
-    }    
-}
+    }  
 
+    private testPermission = (userPermission: UserPermission, commandPermission: CommandPermission) => {
+        return userPermission.scope != ScopePermission.None && userPermission.scope >= commandPermission.scope
+    }
+}
