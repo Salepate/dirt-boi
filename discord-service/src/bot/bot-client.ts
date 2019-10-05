@@ -21,6 +21,7 @@ export default class BotClient {
     readonly cachePath: string
     readonly store: Store<BotStore>
     
+    private state: 'offline' | 'login' | 'online' | 'error'
     private token: string = ''
     private client: Discord.Client
     private plugins: Map<string, BotPlugin>
@@ -34,7 +35,7 @@ export default class BotClient {
         this.token = botConfig.client.token
         this.client = new Discord.Client()
         this.store = createStore(storeRoot)
-        
+        this.state = 'offline'
         this.plugins = new Map<string, BotPlugin>()
         this.serviceMap = new Map<string, BotService>()
 
@@ -49,15 +50,21 @@ export default class BotClient {
     
     // API
     run() {
-        let botVersion = process.env.npm_package_version || botConfig.version
-        console.log(`: DirtBoi ${botVersion}`)
-        console.log(`: connecting`)
-        this.client.login(this.token).then((token) => {
-            console.log(`: received token: ${token}`)
-            this.registerPlugin(BotNative)
-        }).catch((error) => {
-            console.log(`: failed to login`)
-            console.error(error)
+        return new Promise((resolve, reject) => {
+            let botVersion = process.env.npm_package_version || botConfig.version
+            console.log(`: DirtBoi ${botVersion}`)
+            console.log(`: connecting`)
+            this.state = 'login'
+            this.client.login(this.token).then((token) => {
+                console.log(`: received token: ${token}`)
+                this.registerPlugin(BotNative)
+                resolve()
+            }).catch((error) => {
+                this.state = 'error'
+                console.log(`: failed to login`)
+                console.error(error)
+                reject()
+            })
         })
     }
 
