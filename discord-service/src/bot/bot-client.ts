@@ -52,8 +52,13 @@ export default class BotClient {
         let botVersion = process.env.npm_package_version || botConfig.version
         console.log(`: DirtBoi ${botVersion}`)
         console.log(`: connecting`)
-        this.client.login(this.token)
-        this.registerPlugin(BotNative)
+        this.client.login(this.token).then((token) => {
+            console.log(`: received token: ${token}`)
+            this.registerPlugin(BotNative)
+        }).catch((error) => {
+            console.log(`: failed to login`)
+            console.error(error)
+        })
     }
 
     getService<T>(name: string): T {
