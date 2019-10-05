@@ -5,7 +5,7 @@
   "description": "Dirt Boi bot",
   "scripts": {
     "tsc": "tsc",
-    "clean": "rimraf build",
+    "clean": "del-cli \"build/**/*\" \"!build/cache\" \"!build/cache/**/*.*\"",
     "assets": "copyfiles \"rpg/**/*.json\" \"build/assets/\"",
     "build": "npm run clean && tsc && npm run assets",
     "recompile": "npm run build && node build/index.js",
@@ -17,6 +17,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "del-cli": "^3.0.0",
     "nodemon": "^1.19.2"
   },
   "dependencies": {
