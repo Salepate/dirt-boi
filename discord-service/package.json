@@ -1,6 +1,6 @@
 {
   "name": "discord-service",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "Dirt Boi bot",
   "scripts": {
