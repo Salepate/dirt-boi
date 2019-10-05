@@ -6,8 +6,6 @@ Dirt-Boi is a discord bot made for serving my selfish purposes (and acquiring No
 
 It can be extended with commands, services and plugins
 
-## Development
-
 ### Commands
 
 A command can be invoked by a discord user
@@ -42,3 +40,10 @@ a plugin packs commands and services together and offers extra initialization ca
     1. edit `discord-service/src/assets/bot.config.json` and set your client data: token, id, secret, uris
     1. `cd discord-service`
     1. `npm run dev` to run the bot and automatically rebuild on changes
+    
+## Development
+
+### Specs
+* Typescript
+* Express
+* Redux
