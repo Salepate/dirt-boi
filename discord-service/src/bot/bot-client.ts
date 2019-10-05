@@ -48,7 +48,7 @@ export default class BotClient {
     
     // API
     run() {
-        let botVersion = process.env.npm_package_version || version
+        let botVersion = process.env.npm_package_version || botConfig.version
         console.log(`: DirtBoi ${botVersion}`)
         console.log(`: connecting`)
         this.client.login(this.token)
