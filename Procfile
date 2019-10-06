@@ -1,1 +1,1 @@
-web: node discord-service/build/index.js
+web: node build/index.js

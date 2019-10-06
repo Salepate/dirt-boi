@@ -1,6 +1,5 @@
-import { TextChannel, User, Message, RichEmbed} from 'discord.js';
+import { Message, RichEmbed, TextChannel, User } from 'discord.js';
 import { DirtBoiUserProfile } from "../store/user-store";
-import battleApi from '../plugins/rpg-plugin/game/character/character-api';
 
 export namespace MessageSource {
     export type Source = {

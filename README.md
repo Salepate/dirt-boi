@@ -26,8 +26,6 @@ a plugin packs commands and services together and offers extra initialization ca
 
 ## Setup
 
-*web-frontend is not used at this time*
-
 * Create an application/bot
     1. create application at https://discordapp.com/developers/applications/
     1. create bot in the created application
