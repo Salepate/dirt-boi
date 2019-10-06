@@ -173,6 +173,10 @@ export default class BotClient {
 
     private onMessage = (msg: Discord.Message) => {
         let author = msg.author
+
+        if ( !(msg.channel instanceof Discord.TextChannel) )
+            return
+            
         let channel = msg.channel as Discord.TextChannel
         this.store.dispatch(actionUserInteracted(author))
 
