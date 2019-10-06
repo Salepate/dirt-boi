@@ -92,14 +92,11 @@ export default class BotClient {
     }
 
     registerPlugin(plugin: BotPlugin) {
-        if ( this.initializationQueue.length > 0) {
-            this.initializationQueue.push(plugin)
-            return
-        }
         this.initializationQueue.push(plugin)
-        this.initializePlugin(plugin)
+        if ( this.initializationQueue.length == 1) {
+            this.initializePlugin(plugin)
+        }
     }
-
 
     removeService(name: string) {
         if ( this.serviceMap.has(name) ) {
@@ -112,48 +109,28 @@ export default class BotClient {
             this.serviceMap.delete(name)
         } 
     }
-
     // internal
-    private initializePlugin(plugin: BotPlugin) {
-        const initializationTimeout = () => {
-            if ( asyncServices > 0 ) {
-                console.log(`: failed to initialize plugin ${plugin.name}`)
-            }
-        }
-
-        const checkQueue = () => {
-            if ( asyncServices === 0 ) {
-                this.completePluginInitialization(plugin)
-            }
-        }
-
+    private async initializePlugin(plugin: BotPlugin) {
         console.log(`: trying to register plugin ${plugin.name}`)
 
         let services: BotService[] = plugin.services || []
         let error: boolean = false
-        let asyncServices = 0
 
         for(let i = 0; i < services.length; ++i) {
+            console.log(`: starting service ${services[i].name}`)
             let res = services[i].run(this)
 
             if ( typeof res === 'boolean') {
                 if ( !(res as boolean) ) {
                     error = true
-                } else {
-                    console.log(`: service ${services[i].name} successfully initialized`)
-                    this.serviceMap.set(services[i].name, services[i])
                 }
             } else {
-                ++asyncServices
-                let p: Promise<boolean> = res
-                p.then((success => {
-                    if ( success ) {
-                        console.log(`: service ${services[i].name} successfully initialized`)
-                        asyncServices--
-                        this.serviceMap.set(services[i].name, services[i])
-                        checkQueue()
-                    } 
-                }))
+                await res.catch(e => { error = true })
+            }
+
+            if ( !error ) {
+                console.log(`: service ${services[i].name} successfully initialized`)
+                this.serviceMap.set(services[i].name, services[i])
             }
         }
         
@@ -161,19 +138,16 @@ export default class BotClient {
             console.log(`: failed to initialize plugin ${plugin.name}`)
         }
         else {
-            if ( asyncServices === 0 ) {
-                this.completePluginInitialization(plugin)
-            } else {
-                setTimeout(initializationTimeout, 1000 * 20);
-            }
+            this.completePluginInitialization(plugin)
         }
     }
 
     private completePluginInitialization(plugin: BotPlugin) {
         let commands: BotCommand[] = plugin.commands || []
 
-        if ( this.initializationQueue.includes(plugin))
+        if ( this.initializationQueue.includes(plugin)) {
             this.initializationQueue.splice(this.initializationQueue.indexOf(plugin), 1)
+        }
         
         if ( !isUndefined(plugin.initializationCallback))
             plugin.initializationCallback(this)
@@ -189,18 +163,6 @@ export default class BotClient {
         }
 
         this.plugins.set(plugin.name, plugin)
-    }
-
-    private abortPluginInitialization(plugin: BotPlugin) {
-        console.log(`: removing plugin ${plugin}`)
-        if ( this.initializationQueue.includes(plugin))
-            this.initializationQueue.splice(this.initializationQueue.indexOf(plugin), 1)
-
-        // remove added services
-        let services = plugin.services || []
-
-        for(let i = 0; i < services.length; ++i) 
-            this.removeService(services[i].name)
     }
 
     private onConnectionReady() {
