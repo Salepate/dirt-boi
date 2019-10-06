@@ -68,6 +68,8 @@ export default class BotClient {
         })
     }
 
+    getState(): string { return this.state }
+
     getService<T>(name: string): T {
         const service: BotService | undefined = this.serviceMap.get(name)
         if ( !isUndefined(service)) {
