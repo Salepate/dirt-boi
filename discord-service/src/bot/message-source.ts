@@ -1,6 +1,6 @@
 import { TextChannel, User, Message, RichEmbed} from 'discord.js';
 import { DirtBoiUserProfile } from "../store/user-store";
-import characterApi from '../plugins/rpg-plugin/game/character/character-api';
+import battleApi from '../plugins/rpg-plugin/game/character/character-api';
 
 export namespace MessageSource {
     export type Source = {
@@ -12,6 +12,7 @@ export namespace MessageSource {
 
 export type MessageOptions = {
     expires?: number        // in seconds
+    update?: string | RichEmbed
 }
 
 export const sendMessage = (source: TextChannel | User, content: string | RichEmbed, options?: MessageOptions) => {
@@ -23,8 +24,17 @@ export const sendMessage = (source: TextChannel | User, content: string | RichEm
         if ( span < 0 ) {
             console.error(`: invalid span ${span}`)
         } else {
+            const update = options.update || ''
+
             source.send(content).then(p => {
-                (p as Message).delete(span*1000)
+    
+                if ( update !== '') {
+                    setTimeout(() => {
+                        (p as Message).edit(update)
+                    }, span*1000);
+                } else {
+                    (p as Message).delete(span*1000)
+                }
             })
         }
     } else {
