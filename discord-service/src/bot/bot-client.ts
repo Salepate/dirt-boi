@@ -202,7 +202,8 @@ export default class BotClient {
             }
         }
 
-        dispatchMessage('guild', channel.guild.id, source, msg.content)
+        if ( !isUndefined(channel) && !isUndefined(channel.guild) )
+            dispatchMessage('guild', channel.guild.id, source, msg.content)
     }  
 
     private testPermission = (userPermission: UserPermission, commandPermission: CommandPermission) => {
