@@ -8,7 +8,7 @@
     "clean": "del-cli \"build/**/*\" \"!build/cache\" \"!build/cache/**/*.*\"",
     "build": "npm run clean && tsc",
     "recompile": "npm run build && node build/index.js",
-    "dev": "nodemon -e js,ts,json --watch src --exec \"npm run recompile\""
+    "dev": "nodemon -e ts,json --watch src --exec \"npm run recompile\""
   },
   "keywords": [],
   "author": {
