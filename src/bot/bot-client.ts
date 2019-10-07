@@ -193,7 +193,7 @@ export default class BotClient {
             profile: profile
         }
 
-        if ( Commands.isBotCommand(msg.content) ) {
+        if ( Commands.isCommand(msg.content) ) {
             const userPermissions = resolvePermission(author, profile, channel)
             const cmdInstance = Commands.createInstance(this, msg.content, source)
 

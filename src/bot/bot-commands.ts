@@ -1,8 +1,8 @@
-import { isUndefined } from 'util';
-import * as botConfig from '../assets/bot.config.json';
-import BotClient from './bot-client';
-import { BotCommand, CommandState } from './bot-plugin';
-import { MessageSource } from './message-source';
+import { isUndefined } from 'util'
+import * as botConfig from '../assets/bot.config.json'
+import BotClient from './bot-client'
+import { BotCommand, CommandState } from './bot-plugin'
+import { MessageSource } from './message-source'
 
 
 export enum ScopePermission {
@@ -22,6 +22,7 @@ export type CommandInstance = {
     readonly permissions: CommandPermission
     invoke: () => any
 }
+
 export namespace Commands
 {
     interface CommandList {
@@ -30,17 +31,20 @@ export namespace Commands
 
     let commands:CommandList = {}
 
-    export function setCommandStatus(name: string, enabled: boolean) {
-        console.log(`not implemented yet`)
+    export const getCommandStatus = (name: string) => commands[name] && commands[name].enabled
+
+    export const setCommandStatus = (name: string, enabled: boolean) => {
+        if ( commands[name] )
+            commands[name].enabled = enabled
     }
 
     export function getCommands() { return commands }
 
 
-    export function isBotCommand(msg: string): boolean {
-        if ( msg.length > botConfig.basePrefix.length && msg.startsWith(botConfig.basePrefix) ) {
-            let identifier = msg.split(/ /)[0].substring(1)
-            return !isUndefined(commands[identifier]) && commands[identifier].state
+    export function isCommand(message: string): boolean {
+        if ( message.length > botConfig.basePrefix.length && message.startsWith(botConfig.basePrefix) ) {
+            let identifier = message.split(/ /)[0].substring(1)
+            return !isUndefined(commands[identifier]) && commands[identifier].enabled
         }
         return false
     }
@@ -62,7 +66,7 @@ export namespace Commands
 
         const instance: CommandInstance = {
             invoke: () => {
-                command.invoke(bot, src, ...args)
+                command.invoke(bot, src, ...commandArgs)
             },
             permissions: command.permission || {scope:ScopePermission.User}
         }
@@ -75,14 +79,14 @@ export namespace Commands
         if ( !commands[command.identifier] ) {
             commands[command.identifier] = {
                 ...command,
-                state: true
+                enabled: true
             }
             success = true
         }
         return success
     }
 
-    export const getCommand = (identifier: string): BotCommand & CommandState | undefined => {
+    export const getCommand = (identifier: string): BotCommand | undefined => {
         if ( commands[identifier] )
             return commands[identifier]
     }

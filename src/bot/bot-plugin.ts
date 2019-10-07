@@ -12,7 +12,7 @@ export type BotCommand = {
 }
 
 export type CommandState = {
-    state: boolean
+    enabled: boolean
 }
 
 export type BotPlugin = {
