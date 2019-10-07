@@ -11,9 +11,6 @@ export type BotCommand = {
     permission?: CommandPermission
 }
 
-export type CommandState = {
-    state: boolean
-}
 
 export type BotPlugin = {
     name: string

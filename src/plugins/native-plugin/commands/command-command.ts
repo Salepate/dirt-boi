@@ -21,11 +21,11 @@ const commandCommand: BotCommand = {
                 sendMessage(source.channel, `Cannot alter ${identifier} command`, {expires: 5})
             } else {
                 if ( activate ) {
-                    command.state = true
+                    Commands.setCommandStatus(command.identifier, true)
                 } else if ( deactivate ) {
-                    command.state = false    
+                    Commands.setCommandStatus(command.identifier, false)   
                 }
-                sendMessage(source.channel, `command ${command.identifier} is ${command.state ? 'enabled' : 'disabled'}`)
+                sendMessage(source.channel, `command ${command.identifier}: ${Commands.getCommandStatus(commandIdentifier) ? 'enabled' : 'disabled'}`)
             }
         }
     },

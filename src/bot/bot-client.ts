@@ -77,15 +77,6 @@ export default class BotClient {
         }
         throw `unknown service: ${name}`
     }
-        
-    registerCommand(cmd: BotCommand) {
-        if ( Commands.registerCommand(this, cmd) ) {
-            console.log(`: registered command ${cmd.identifier}`)
-        }
-        else {
-            console.log(`: unable to initialize command ${cmd.identifier}`)            
-        }
-    }
 
     registerService(service: BotService) {
         this.serviceMap.set(service.name, service)
@@ -114,6 +105,10 @@ export default class BotClient {
     // internal
     private async initializePlugin(plugin: BotPlugin) {
         console.log(`: trying to register plugin ${plugin.name}`)
+
+        if ( this.plugins.has(plugin.name)) {
+            throw `${plugin.name} is already registered`
+        }
 
         let services: BotService[] = plugin.services || []
         let error: boolean = false
@@ -155,7 +150,7 @@ export default class BotClient {
             plugin.initializationCallback(this)
 
         for(let i = 0; i < commands.length; ++i) {
-            this.registerCommand(commands[i])
+            Commands.registerCommand(commands[i], plugin.name)
         }
 
         console.log(`: registered plugin ${plugin.name}`)
@@ -193,7 +188,7 @@ export default class BotClient {
             profile: profile
         }
 
-        if ( Commands.isBotCommand(msg.content) ) {
+        if ( Commands.isCommand(msg.content) ) {
             const userPermissions = resolvePermission(author, profile, channel)
             const cmdInstance = Commands.createInstance(this, msg.content, source)
 
