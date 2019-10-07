@@ -1,7 +1,6 @@
-import { isUndefined } from 'util'
 import * as botConfig from '../assets/bot.config.json'
 import BotClient from './bot-client'
-import { BotCommand, CommandState } from './bot-plugin'
+import { BotCommand } from './bot-plugin'
 import { MessageSource } from './message-source'
 
 
@@ -14,6 +13,12 @@ export enum ScopePermission {
     BotOwner        = 1 << 5
 }
 
+enum CommandAlias {
+    Short,
+    Long,       
+    OnlyLong,
+}
+
 export type CommandPermission = {
     scope: ScopePermission
 }
@@ -23,28 +28,36 @@ export type CommandInstance = {
     invoke: () => any
 }
 
+type InternalCommand = BotCommand & {
+    state : { enabled: boolean },
+    alias: CommandAlias
+}
+
+interface CommandMap { [identifier:string] : InternalCommand }
+const commands: CommandMap = {}
+
 export namespace Commands
 {
-    interface CommandList {
-        [identifier:string]: BotCommand & CommandState
-    }
-
-    let commands:CommandList = {}
-
-    export const getCommandStatus = (name: string) => commands[name] && commands[name].enabled
+    export const getCommandStatus = (name: string) => commands[name] && commands[name].state.enabled
 
     export const setCommandStatus = (name: string, enabled: boolean) => {
         if ( commands[name] )
-            commands[name].enabled = enabled
+            commands[name].state.enabled = enabled
     }
 
-    export function getCommands() { return commands }
-
+    export function getCommands(showLongVariants?: boolean) {
+        let mapCopy: CommandMap = {}
+        for(let p in commands) {
+            if ( showLongVariants || commands[p].alias != CommandAlias.Long )
+            mapCopy[p] = commands[p]
+        }
+        return mapCopy
+    }
 
     export function isCommand(message: string): boolean {
         if ( message.length > botConfig.basePrefix.length && message.startsWith(botConfig.basePrefix) ) {
             let identifier = message.split(/ /)[0].substring(1)
-            return !isUndefined(commands[identifier]) && commands[identifier].enabled
+            return commands[identifier] && commands[identifier].state.enabled
         }
         return false
     }
@@ -74,16 +87,19 @@ export namespace Commands
         return instance
     }
 
-    export function registerCommand(bot: BotClient, command: BotCommand): boolean {
-        let success: boolean = false
+    export function registerCommand(command: BotCommand, namespace: string) {
+        const internalCommand: InternalCommand = {...command, state: {enabled: true}, alias: CommandAlias.Long}
+        const {namespaceSeparator} = botConfig
+
+        const identifier = [namespace, namespaceSeparator, command.identifier].join('')
+        commands[identifier] = internalCommand
+        
         if ( !commands[command.identifier] ) {
-            commands[command.identifier] = {
-                ...command,
-                enabled: true
-            }
-            success = true
+            commands[command.identifier] = {...internalCommand, alias: CommandAlias.Short}
+        } else {
+            commands[identifier].alias = CommandAlias.OnlyLong
+            console.warn(`: unable to register alias for command ${command.identifier}`)
         }
-        return success
     }
 
     export const getCommand = (identifier: string): BotCommand | undefined => {
