@@ -36,13 +36,13 @@ export namespace Commands
 
     export function getCommands() { return commands }
 
-    export function isBotCommand(msg: string): boolean {
-        return msg.length > botConfig.basePrefix.length && msg.startsWith(botConfig.basePrefix)
-    }
 
-    export function isValidBotCommand(msg: string): boolean {
-        let identifier = msg.split(/ /)[0].substring(1)
-        return !isUndefined(commands[identifier]) && commands[identifier].state
+    export function isBotCommand(msg: string): boolean {
+        if ( msg.length > botConfig.basePrefix.length && msg.startsWith(botConfig.basePrefix) ) {
+            let identifier = msg.split(/ /)[0].substring(1)
+            return !isUndefined(commands[identifier]) && commands[identifier].state
+        }
+        return false
     }
 
     export function createInstance(bot: BotClient, msg: string, src: MessageSource.Source) {

@@ -194,15 +194,13 @@ export default class BotClient {
         }
 
         if ( Commands.isBotCommand(msg.content) ) {
-            if ( Commands.isValidBotCommand(msg.content)) {
-                const userPermissions = resolvePermission(author, profile, channel)
-                const cmdInstance = Commands.createInstance(this, msg.content, source)
+            const userPermissions = resolvePermission(author, profile, channel)
+            const cmdInstance = Commands.createInstance(this, msg.content, source)
 
-                if ( this.testPermission(userPermissions, cmdInstance.permissions)) {
-                    cmdInstance.invoke()
-                } else {
-                    sendMessage(channel, `permission denied (${cmdInstance.permissions.scope})`, {expires: 5})
-                }
+            if ( this.testPermission(userPermissions, cmdInstance.permissions)) {
+                cmdInstance.invoke()
+            } else {
+                sendMessage(channel, `permission denied (${cmdInstance.permissions.scope})`, {expires: 5})
             }
         }
 
