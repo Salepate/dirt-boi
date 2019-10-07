@@ -78,6 +78,10 @@ export default class BotClient {
         throw `unknown service: ${name}`
     }
 
+    getPlugin(name: string): BotPlugin | undefined {
+        return this.plugins.get(name)
+    }
+
     registerService(service: BotService) {
         this.serviceMap.set(service.name, service)
         console.log(`: starting service ${service.name}`)

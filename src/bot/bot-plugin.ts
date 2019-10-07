@@ -14,6 +14,7 @@ export type BotCommand = {
 
 export type BotPlugin = {
     name: string
+    version?: string
     commands?: BotCommand[]
     services?: BotService[]
     initializationCallback?: (bot: BotClient) => boolean
