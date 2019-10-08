@@ -81,6 +81,12 @@ export default class BotClient {
     getPlugin(name: string): BotPlugin | undefined {
         return this.plugins.get(name)
     }
+    
+    getPlugins(): BotPlugin[] {
+        return [...this.plugins.values()]
+    }
+
+
 
     registerService(service: BotService) {
         this.serviceMap.set(service.name, service)

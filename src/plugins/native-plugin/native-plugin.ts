@@ -8,7 +8,8 @@ import backendService from "./services/backend-service";
 const BotNative: BotPlugin = {
     name: "native",
     commands: [versionCommand, commandsCommand, commandCommand],
-    services: [apiService, backendService]
+    services: [apiService, backendService],
+    version: "1.0.2"
 }
 
 export default BotNative
