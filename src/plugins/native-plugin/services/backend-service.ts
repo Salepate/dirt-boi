@@ -18,11 +18,15 @@ const backendService: BotService = {
             })
 
             api.addRoute('api', 'plugins/get', (req, res) => {
-                res.send(bot.getPlugins())
+                const plugins = bot.getPlugins()
+                res.send(...plugins.map(p => ({
+                        name: p.name,
+                        version: p.version || '1.0.0',
+                        services: [(p.services || []).map(service => service.name)]
+                        }))
+                    )
             })
-
         }
-
         return !!api // hax
     },
     service: undefined
