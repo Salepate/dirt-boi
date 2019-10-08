@@ -13,10 +13,11 @@ export enum ScopePermission {
     BotOwner        = 1 << 5
 }
 
-enum CommandAlias {
-    Short,
-    Long,       
-    OnlyLong,
+export enum CommandAlias {
+    Null            = 0,
+    Short           = 1 << 0,
+    Long            = 1 << 1,
+    OnlyLong        = 1 << 2,
 }
 
 export type CommandPermission = {
@@ -45,11 +46,11 @@ export namespace Commands
             commands[name].state.enabled = enabled
     }
 
-    export function getCommands(showLongVariants?: boolean) {
+    export function getCommands(variant: CommandAlias = CommandAlias.Short & CommandAlias.OnlyLong) {
         let mapCopy: CommandMap = {}
         for(let p in commands) {
-            if ( showLongVariants || commands[p].alias != CommandAlias.Long )
-            mapCopy[p] = commands[p]
+            if ( (commands[p].alias & variant) != CommandAlias.Null )
+                mapCopy[p] = commands[p]
         }
         return mapCopy
     }
