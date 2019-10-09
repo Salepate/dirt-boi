@@ -10,7 +10,7 @@ export type DirtBoiUserProfile = {
 
 
 export type UserStore = {
-    [state: string]: DirtBoiUserProfile,
+    [id: string]: DirtBoiUserProfile,
 }
 
 

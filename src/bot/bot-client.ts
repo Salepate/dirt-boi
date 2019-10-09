@@ -149,6 +149,10 @@ export default class BotClient {
         }
     }
 
+    public findUserProfile(id: string): DirtBoiUserProfile | undefined {
+        return this.store.getState().users[id]
+    }
+
     private completePluginInitialization(plugin: BotPlugin) {
         let commands: BotCommand[] = plugin.commands || []
 
