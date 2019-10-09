@@ -7,6 +7,7 @@ import { isUndefined } from "util";
 
 const versionCommand: BotCommand = {
     identifier: 'version',
+    description: 'display bot or plugin version',
     invoke: (bot: BotClient, src: MessageSource.Source, pluginName: string) => {
 
         if ( pluginName ) {

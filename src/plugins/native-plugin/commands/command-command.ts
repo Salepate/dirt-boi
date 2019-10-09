@@ -8,6 +8,7 @@ const identifier = 'command'
 
 const commandCommand: BotCommand = {
     identifier: identifier,
+    description: 'enable/disable a specific command',
     invoke: (bot: BotClient, source: MessageSource.Source, commandIdentifier: string, state: string) => {
         state = state || ""
         let activate = (state.toLocaleLowerCase().localeCompare("on") === 0) || state === "1"
