@@ -46,7 +46,7 @@ export namespace Commands
             commands[name].state.enabled = enabled
     }
 
-    export function getCommands(variant: CommandAlias = CommandAlias.Short & CommandAlias.OnlyLong) {
+    export function getCommands(variant: CommandAlias = CommandAlias.Short | CommandAlias.OnlyLong) {
         let mapCopy: CommandMap = {}
         for(let p in commands) {
             if ( (commands[p].alias & variant) != CommandAlias.Null )
