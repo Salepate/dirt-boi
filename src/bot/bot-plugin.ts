@@ -7,8 +7,8 @@ export type BotCommand = {
     identifier: string
     invoke: (client: BotClient, source: MessageSource.Source, ...args: any) => boolean | void
     dontSplit?: boolean
-    level?: number
     permission?: CommandPermission
+    description?: string
 }
 
 
