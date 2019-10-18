@@ -68,6 +68,11 @@ export default class BotClient {
         })
     }
 
+    getUser(id: string): Discord.User | undefined { 
+        const user = this.client.users.get(id)
+        return user
+    }
+
     getState(): string { return this.state }
 
     getService<T>(name: string): T {
