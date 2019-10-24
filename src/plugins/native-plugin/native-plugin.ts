@@ -1,14 +1,12 @@
 import { BotPlugin } from "../../bot/bot-plugin";
-import versionCommand from "./commands/version-command";
-import commandsCommand from "./commands/commands-command";
-import apiService from "./services/service-api";
-import commandCommand from "./commands/command-command";
 import backendService from "./services/backend-service";
-import helpCommand from "./commands/help-commands";
+import apiService from "./services/service-api";
+import * as nativeCommands from './commands'
+import { createArrayFromModule } from "../../bot/helpers/command-helpers";
 
 const nativePlugin: BotPlugin = {
     name: "native",
-    commands: [versionCommand, helpCommand, commandsCommand, commandCommand],
+    commands: createArrayFromModule(nativeCommands),
     services: [apiService, backendService],
     version: "1.0.2"
 }
