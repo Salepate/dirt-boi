@@ -64,7 +64,14 @@ export namespace Commands
     }
 
     export function createInstance(bot: BotClient, msg: string, src: MessageSource.Source) {
-        let args = msg.split(/ /)
+
+        let regex = /"([^"\n]*)"|([^\s]+)/g
+        let match: RegExpExecArray
+        const args: string[] = []
+        while( (match = regex.exec(msg) as RegExpExecArray ) !== null) {
+            args.push(match[0])
+        }
+
         const prefixLength = botConfig.basePrefix.length
         let identifier = args[0].substring(prefixLength)
         let command = commands[identifier]
