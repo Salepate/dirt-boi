@@ -103,6 +103,22 @@ export namespace Commands
         }
     }
 
+    export function removeCommand(identifier: string, namespace: string) {
+        const {namespaceSeparator} = botConfig
+        const commandLongIdentifier = [namespace, namespaceSeparator, identifier].join('')
+        const commandShortIdentifier = identifier
+
+        if ( commands[commandLongIdentifier]) {
+            const cmd = commands[commandLongIdentifier]
+
+            if ( cmd.alias === CommandAlias.Long ) {
+                delete commands[commandShortIdentifier]
+            }
+
+            delete commands[commandLongIdentifier]
+        }
+    }
+
     export const getCommand = (identifier: string): BotCommand | undefined => {
         if ( commands[identifier] )
             return commands[identifier]

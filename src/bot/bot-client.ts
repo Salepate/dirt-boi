@@ -14,13 +14,15 @@ import BotService from './bot-service';
 import { MessageSource, sendMessage } from './message-source';
 import { resolvePermission, UserPermission } from './user-permission.js';
 
+export type BotState = 'offline' | 'login' | 'online' | 'error'
+
 export default class BotClient {
     readonly path: string
     readonly assetPath: string
     readonly cachePath: string
     readonly store: Store<BotStore>
     
-    private state: 'offline' | 'login' | 'online' | 'error'
+    private state: BotState
     private token: string = ''
     private client: Discord.Client
     private plugins: Map<string, BotPlugin>
@@ -89,15 +91,27 @@ export default class BotClient {
         return [...this.plugins.values()]
     }
 
+    hasError(): boolean {
+        return this.state === 'error'
+    }
 
 
     registerService(service: BotService) {
+        if ( this.hasError() ) {
+            console.error(`: cannot register service while bot is down`)
+            return
+        }
         this.serviceMap.set(service.name, service)
         console.log(`: starting service ${service.name}`)
         service.run(this)
     }
 
     registerPlugin(plugin: BotPlugin) {
+        if ( this.hasError() ) {
+            console.error(`: cannot register plugin while bot is down`)
+            return
+        }
+
         this.initializationQueue.push(plugin)
         if ( this.initializationQueue.length == 1) {
             this.initializePlugin(plugin)
@@ -114,6 +128,29 @@ export default class BotClient {
             }
             this.serviceMap.delete(name)
         } 
+    }
+
+    removePlugin(name: string) {
+        if ( this.plugins.has(name)) {
+            const plugin = this.plugins.get(name) as BotPlugin
+
+            for(let service in plugin.services || {}) {
+                this.removeService(service)
+            }
+
+            const commands = plugin.commands || []
+
+            commands.forEach(command => {
+                Commands.removeCommand(command.identifier, plugin.name)
+            })
+
+            if ( plugin.shutdownCallback )
+                plugin.shutdownCallback(this)
+
+            this.plugins.delete(name)
+
+            console.log(`: removed plugin ${name}`)
+        }
     }
     // internal
     private async initializePlugin(plugin: BotPlugin) {
@@ -171,12 +208,11 @@ export default class BotClient {
         }
 
         console.log(`: registered plugin ${plugin.name}`)
-
-        if ( this.initializationQueue.length > 0 ) {
-            this.initializePlugin(this.initializationQueue[0])
-        }
-
         this.plugins.set(plugin.name, plugin)
+
+            if ( this.initializationQueue.length > 0 ) {
+                this.initializePlugin(this.initializationQueue[0])
+            }
     }
 
     private onConnectionReady() {
@@ -220,8 +256,11 @@ export default class BotClient {
             dispatchMessage('guild', channel.guild.id, source, msg.content)
     }
 
-    private beforeShutdown() {
-
+    public shutdown = () => {
+        const plugins = [...this.plugins.keys()]
+        plugins.forEach(plugin => this.removePlugin(plugin))
+        const services = [...this.serviceMap.keys()]
+        services.forEach(service => this.removeService(service))
     }
 
     private testPermission = (userPermission: UserPermission, commandPermission: CommandPermission) => {
