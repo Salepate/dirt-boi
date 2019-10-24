@@ -33,6 +33,16 @@ const commandCommand: BotCommand = {
 
     permission: {
         scope: ScopePermission.BotOwner
+    },
+    usage: {
+        args: [
+            {
+                expected: "command name"
+            }, 
+            {
+                expected: "on|off"
+            }
+        ]
     }
 }
 

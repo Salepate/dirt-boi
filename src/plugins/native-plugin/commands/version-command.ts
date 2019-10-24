@@ -20,6 +20,12 @@ const versionCommand: BotCommand = {
         } else {
             sendMessage(src.channel, versionEmbed('Dirt Boi', version, 'dev'))
         }
+    },
+    usage: {
+        args: [{
+            expected: 'plugin name',
+            optional: true
+        }]
     }
 }
  

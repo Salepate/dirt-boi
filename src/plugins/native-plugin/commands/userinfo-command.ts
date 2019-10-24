@@ -6,9 +6,12 @@ import { ScopePermission } from "../../../bot/bot-commands";
 
 const userInfoCommand: BotCommand = {
     identifier: 'userinfo',
-    description: 'get information on self or on mentionned users',
+    description: 'get information on self or on mentioned users',
     invoke: (_, source, user: User) => {
         sendMessage(source.user, userInfoEmbed(user))
+    },
+    usage: {
+        args: [{expected: '@User...', optional: true}]
     },
     permission: {scope: ScopePermission.GuildAdmin }
 }

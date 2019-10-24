@@ -5,7 +5,7 @@ import { commandEmbed } from "../embeds/command-embeds";
 
 const helpCommand: BotCommand = {
     identifier: 'help',
-    description: 'display a command information',
+    description: 'display a command information and its usage\n',
     invoke: (bot, src, commandName) => {
         commandName = commandName || 'help'
         const command = Commands.getCommand(commandName)
