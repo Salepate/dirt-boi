@@ -4,7 +4,6 @@ import { resolve } from 'path';
 import { createStore, Store } from 'redux';
 import { isUndefined } from 'util';
 import * as botConfig from '../assets/bot.config.json';
-import BotNative from '../plugins/native-plugin/native-plugin';
 import { BotStore, storeRoot } from '../store/bot-store';
 import { actionUserInteracted, DirtBoiUserProfile } from '../store/user-store';
 import './bot-commands';
@@ -50,14 +49,13 @@ export default class BotClient {
     
     // API
     run() {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
             let botVersion = process.env.npm_package_version || botConfig.version
             console.log(`: DirtBoi ${botVersion}`)
             console.log(`: connecting`)
             this.state = 'login'
             this.client.login(this.token).then((token) => {
                 console.log(`: received token: ${token}`)
-                this.registerPlugin(BotNative)
                 resolve()
             }).catch((error) => {
                 this.state = 'error'
@@ -220,7 +218,11 @@ export default class BotClient {
 
         if ( !isUndefined(channel) && !isUndefined(channel.guild) )
             dispatchMessage('guild', channel.guild.id, source, msg.content)
-    }  
+    }
+
+    private beforeShutdown() {
+
+    }
 
     private testPermission = (userPermission: UserPermission, commandPermission: CommandPermission) => {
         return userPermission.scope != ScopePermission.None && userPermission.scope >= commandPermission.scope
