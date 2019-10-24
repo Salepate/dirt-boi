@@ -1,11 +1,26 @@
 import { RichEmbed } from "discord.js";
-import { ScopePermission, CommandAlias } from "../../../bot/bot-commands";
+import { ScopePermission, Commands } from "../../../bot/bot-commands";
 import { BotCommand } from "../../../bot/bot-plugin";
 
 export const commandEmbed = (command: BotCommand, enabled?: boolean) => {
-        const permissionLabels: string[] = ['None', 'Everyone','Role','Server Admin', 'Server Owner', 'Bot Owner']
-        const idx = Math.trunc(Math.log2(command.permission ? command.permission.scope : ScopePermission.User))
-        const label = (idx >= 0 && idx < permissionLabels.length) ? permissionLabels[idx] : 'Unknown'
+    const permissionLabels: string[] = ['None', 'Everyone','Role','Server Admin', 'Server Owner', 'Bot Owner']
+    const idx = Math.trunc(Math.log2(command.permission ? command.permission.scope : ScopePermission.User))
+    const label = (idx >= 0 && idx < permissionLabels.length) ? permissionLabels[idx] : 'Unknown'
+
+    let usage: string
+
+    if ( command.usage ) {
+        const args: string[] = [...command.usage.args.map(arg => {
+            const leftBrace = arg.optional ? '[' : '<'
+            const rightBrace = arg.optional ? ']' : '>'
+            return `${leftBrace}${arg.expected}${rightBrace}`
+        })]
+
+        usage = args.join(' ')
+    } else 
+    {
+        usage = ''
+    }
 
     return new RichEmbed({
         title: `${command.identifier} - (${label})`,
@@ -13,7 +28,7 @@ export const commandEmbed = (command: BotCommand, enabled?: boolean) => {
         fields: [
             {
                 name: 'usage',
-                value: 'not implemented yet'
+                value: `${Commands.getCommandPrefix()}${command.identifier}  ${usage}`
             }, 
             {
                 name: 'status',

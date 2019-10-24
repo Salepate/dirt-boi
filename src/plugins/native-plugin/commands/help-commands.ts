@@ -15,6 +15,14 @@ const helpCommand: BotCommand = {
         } else {
             sendMessage(src.channel, `unknown command ${commandName}`)
         }
+    },
+    usage: {
+        args: [
+            {
+                expected: 'command name',
+                optional: true
+            }
+        ]
     }
 }
 

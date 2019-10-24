@@ -9,6 +9,12 @@ export type BotCommand = {
     dontSplit?: boolean
     permission?: CommandPermission
     description?: string
+    usage?: {
+        args: {
+            expected: string,
+            optional?: boolean
+        }[]
+    }
 }
 
 

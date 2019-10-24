@@ -39,6 +39,9 @@ const commands: CommandMap = {}
 
 export namespace Commands
 {
+    export const getCommandPrefix = () => botConfig.basePrefix
+    export const getCommandSeparator = () => botConfig.namespaceSeparator
+
     export const getCommandStatus = (name: string) => commands[name] && commands[name].state.enabled
 
     export const setCommandStatus = (name: string, enabled: boolean) => {
